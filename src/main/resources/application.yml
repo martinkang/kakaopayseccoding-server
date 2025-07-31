@@ -1,0 +1,8 @@
+logging:
+  level:
+    root: INFO
+    com.stocks: DEBUG
+
+ranking:
+  interval-minutes: 5     # 랭킹 배치 실행 주기
+  schedule-minutes: 10     # 노출용 타임태그 주기

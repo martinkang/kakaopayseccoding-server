@@ -33,10 +33,11 @@ dependencies {
     // Embedded DB
     runtimeOnly("com.h2database:h2")
 
-    // Embedded Redis (로컬 테스트용)
+    // Embedded Redis
     implementation("it.ozimov:embedded-redis:0.7.3")
-    // 또는 Testcontainers Redis 권장
-    testImplementation("org.testcontainers:redis:1.19.7")
+
+    // Kotlin Logging (SLF4J wrapper)
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -48,6 +49,10 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
     }
+}
+
+configurations.all {
+    exclude(group = "org.slf4j", module = "slf4j-simple")
 }
 
 allOpen {
