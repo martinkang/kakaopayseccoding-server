@@ -1,5 +1,6 @@
 package org.stocks.runner
 
+import mu.KotlinLogging
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import org.stocks.entity.Stock
@@ -11,6 +12,8 @@ import java.io.InputStreamReader
 class DataLoader(
     private val stockRepository: StockRepository
 ) : CommandLineRunner {
+
+    private val logger = KotlinLogging.logger {}
 
     override fun run(vararg args: String?) {
         val inputStream = this::class.java.getResourceAsStream("/stocks/stocks.csv")
@@ -30,12 +33,11 @@ class DataLoader(
                     name = tokens[2],
                     price = tokens[3].toInt(),
                     priceYesterday = tokens[4].toInt(),
-                    volume = tokens[5].toLong(),
-                    gainRate = (tokens[3].toInt() - tokens[4].toInt()).toDouble() / tokens[4].toInt()
+                    volume = tokens[5].toLong()
                 )
             }
             stockRepository.saveAll(stocks)
-            println("Loaded ${stocks.size} stocks into H2 DB")
+            logger.debug("Loaded ${stocks.size} stocks into H2 DB")
         }
     }
 }

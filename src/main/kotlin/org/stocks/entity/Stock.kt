@@ -3,6 +3,8 @@ package org.stocks.entity
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Index
+import jakarta.persistence.PrePersist
+import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
 
 @Entity
@@ -10,7 +12,7 @@ import jakarta.persistence.Table
     name = "stock",
     indexes = [
         Index(name = "idx_volume", columnList = "volume"),
-        Index(name = "idx_gain_rate", columnList = "gainRate")
+        Index(name = "idx_price_change", columnList = "priceChange")
     ]
 )
 
@@ -22,5 +24,11 @@ data class Stock(
     val price: Int,
     val priceYesterday: Int,
     val volume: Long,
-    val gainRate: Double // (price - priceYesterday) / priceYesterday 미리 계산
-)
+    var priceChange: Int = 0 // (price - priceYesterday)
+) {
+    @PrePersist
+    @PreUpdate
+    fun calculateChanges() {
+        this.priceChange = price - priceYesterday
+    }
+}
